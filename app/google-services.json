@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "261373569001",
+    "firebase_url": "https://iotproject1-d6110-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "iotproject1-d6110",
+    "storage_bucket": "iotproject1-d6110.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261373569001:android:c4f65ebd046db1ea888d78",
+        "android_client_info": {
+          "package_name": "com.example.dooralarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "261373569001-gcfdbvqn6jbpnm23e4ke770i7h35l5b7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6h2ZKfjAxe5j8K3f0rOd4TnxaMmbndhA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "261373569001-gcfdbvqn6jbpnm23e4ke770i7h35l5b7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
