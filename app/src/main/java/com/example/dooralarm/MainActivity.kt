@@ -8,11 +8,11 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.main_activity.loadingScreen
+import kotlinx.android.synthetic.main.main_activity.recyclerView
+import kotlinx.android.synthetic.main.main_activity.switch1
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,27 +24,21 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
-    private val notificationChannelID = "dooralert_notif_id"
-    private lateinit var loadingScreen: View
-    private lateinit var recyclerView: RecyclerView
     private val itemDataList = mutableListOf<ItemData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        loadingScreen = findViewById(R.id.loadingScreen)
-        recyclerView = findViewById(R.id.recyclerView)
 
-
-        val logsFile = File("${filesDir}\\logs.txt")
+        val logsFile = File("${filesDir}/logs.txt")
         if (logsFile.exists()) {
             lifecycleScope.launch(Dispatchers.IO) {
                 logsFile.forEachLine {
-                    val deviceID = it.split("|")[0]
-                    val timestamp = it.split(" ")[1]
-                    val date = timestamp.split(",")[0]
-                    val time = timestamp.split(",")[1]
+                    val logData = it.split(",")
+                    val deviceID = logData[0]
+                    val date = logData[1]
+                    val time = logData[2]
                     val itemData =
                         ItemData(
                             "Movement detected by device $deviceID",
@@ -61,40 +55,22 @@ class MainActivity : AppCompatActivity() {
             }
         } else logsFile.createNewFile()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName: CharSequence = "DoorAlert"
-            val channelDescription = "Notifications for when movement is detected"
-            val importance = NotificationManager.IMPORTANCE_HIGH
-            val notificationChannel =
-                NotificationChannel(notificationChannelID, channelName, importance)
-            notificationChannel.description = channelDescription
-            val notificationManager = getSystemService(
-                NotificationManager::class.java
-            )
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
+        val sensorStateFile = File("${filesDir}\\sensor state.txt")
+        if (sensorStateFile.exists()) {
+            val state = sensorStateFile.bufferedReader().use { it.readLine() }
+            switch1.isChecked = state.equals("true")
+        } else sensorStateFile.createNewFile()
 
-        val pendingIntent =
-            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
 
-        val builder: NotificationCompat.Builder =
-            NotificationCompat.Builder(this, notificationChannelID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setLargeIcon(
-                    BitmapFactory.decodeResource(
-                        resources,
-                        R.drawable.ic_launcher_foreground
-                    )
-                )
-                .setContentTitle("Notification Title")
-                .setContentText("Notification Content")
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setFullScreenIntent(pendingIntent, true)
-                .setOngoing(true)
+    override fun onDestroy() {
+        println("Desssssstttttttttttroyyyyyyyyyyyyyd")
+        super.onDestroy()
+    }
 
-        val notificationManager = NotificationManagerCompat.from(this)
-        notificationManager.notify(1, builder.build())
-
+    override fun onPause() {
+        println("PAUSED PAUSED PAUSED PAUSED PAUSED PAUSED PAUSED")
+        super.onPause()
     }
 
     private fun getProcessedDate(inputDateString: String): String {
