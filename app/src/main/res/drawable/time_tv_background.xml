@@ -8,6 +8,6 @@
         android:topRightRadius="16dp"/>
 
     <!-- This is the background color -->
-    <solid android:color="#068802" />
+    <solid android:color="#FF6200EE" />
 
 </shape>
